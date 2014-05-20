@@ -1,0 +1,97 @@
+#!/bin/sh
+# -*- sh -*-
+
+: << =cut
+
+=head1 NAME
+
+humid - Plugin to monitor the humidity from a TEMPerHUM sensor.
+
+=head1 CONFIGURATION
+
+The following environment variables are used by this plugin:
+
+=over 4
+
+=item humid_warning <float>
+
+Threshold for when to report a warning
+
+=item humid_critical <float>
+
+Threshold for when to report a critical
+
+=back
+
+=head2 EXAMPLE CONFIGURATION
+
+ [humid]
+  env.humid_warning 5
+  env.humid_critical 10
+
+=head1 NOTES
+
+If run with the "autoconf"-parameter, give our opinion on whether we
+should be run on this system or not. This is optional, and only used
+by munin-config. In the case of this plugin, we should most probably
+always be included.
+
+=head1 MAGIC MARKERS
+
+ #%# family=auto
+ #%# capabilities=autoconf
+
+=cut
+
+
+if [ "$1" = "autoconf" ]; then
+        echo yes
+        exit 0
+fi
+
+# If run with the "config"-parameter, give out information on how the
+# graphs should look.
+
+if [ "$1" = "config" ]; then
+
+        # The host name this plugin is for. (Can be overridden to have
+        # one machine answer for several)
+
+        # The title of the graph
+        echo 'graph_title Humidity'
+        # Arguments to "rrdtool graph". In this case, tell it that the
+        # lower limit of the graph is '0', and that 1k=1000 (not 1024)
+        echo 'graph_args --base 1000 -l 25'
+        # The Y-axis label
+        echo 'graph_vlabel Humidity'
+        # We want Cur/Min/Avg/Max unscaled (i.e. 0.42 load instead of
+        # 420 milliload)
+        echo 'graph_scale no'
+        # Graph category. Defaults to 'other'
+        #echo 'graph_category system'
+        # The fields. "label" is used in the legend. "label" is the only
+        # required subfield.
+        echo 'humid.label humidity'
+        # These two read the environment for warning values for the field
+        # "temp".  If "temp_warning" or "warning" aren't set in the
+        # environment, no warning levels are set.  Likewise for "temp_critical"
+        # and "critical".
+        print_warning humid
+        print_critical humid
+        # This one is purely to add an explanation to the web page. The first
+        # one is for the graph itself, while the second one is for the field
+        # "humid".
+        echo 'graph_info The humidity graph shows humidity readings from the TEMPERhum sensor.'
+        echo 'humid.info TEMPERhum sensor reading'
+
+        # Last, if run with the "config"-parameter, quit here (don't
+        # display any data)
+        exit 0
+fi
+
+# If not run with any parameters at all (or only unknown ones), do the
+# real work - i.e. display the data. Almost always this will be
+# "value" subfield for every data field.
+
+echo -n "humid.value "
+cut -f8 -d' ' < /tmp/tempered.txt|sed 's/%.*//g'

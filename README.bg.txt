@@ -1,0 +1,39 @@
+README.bg
+
+This readme describes how to make use of the TEMPerHUM v1.0 USB temperature/humidity
+sensor from www.pcsensors.com on a Ubuntu 14.04 LTS server.  When the configuration
+is complete, a cron job will run which writes the file /tmp/tempered.txt.  This text
+file contains the temperature, humidity and dew point in the following format:
+
+/dev/hidraw2 0: temperature 81.89 0F, relative humidity 34.8%, dew point 51.4 0F
+
+This text file is used to drive Munin, a graphing software package.  This readme
+assumes you are going to start by loading Ubuntu on a system and goes from there
+
+install Ubuntu 14.04 LTS according to your needs.  Update your installation by running
+'apt-get update' and 'apt-get upgrade' as root.
+
+Download /edorfaust/TEMPered from www.git.com.  This is a project that provides access
+to the TEMPerHUM USB device (and other devices from the same company).  Download
+signal11/hidapi from www.git.com.  This is an hid api that provides access to the
+TEMPered USB device. It is used by the TEMPered project.
+
+Begin installation of the hidapi.  First you must install required applications and
+libraries with 'sudo apt-get install libudev-dev libusb-1.0-0-dev g++ autotools-dev
+autoconf automake libtool'.  Then in the top directory execute the following as root:
+
+./bootstrap
+./configure
+make
+
+Next build TEMPered
+apt-get install cmake
+mkdir ~/build
+cd ~/build
+cmake ..
+
+Once the code is made, test it.  Insert the TEMPerHUM USB device and type 'lsusb'.
+You should see the device.  You should then be able to execute 'tempered'
+
+Note: you can find a lot of information on different TEMPer devices on a blog at
+http://relavak.wordpress.com/2009/10/17/temper-temperature-sensor-linux-driver/
