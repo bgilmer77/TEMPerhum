@@ -25,6 +25,7 @@ autoconf automake libtool'.  Then in the top directory execute the following as 
 ./bootstrap
 ./configure
 make
+make install
 
 Next build TEMPered
 apt-get install cmake
