@@ -14,9 +14,10 @@ install Ubuntu 14.04 LTS according to your needs.  Update your installation by r
 'apt-get update' and 'apt-get upgrade' as root.
 
 Download /edorfaust/TEMPered from www.git.com.  This is a project that provides access
-to the TEMPerHUM USB device (and other devices from the same company).  Download
-signal11/hidapi from www.git.com.  This is an hid api that provides access to the
-TEMPered USB device. It is used by the TEMPered project.
+to the TEMPerHUM USB device (and other devices from the same company).  
+
+Download signal11/hidapi from www.git.com.  This is an hid api that provides access to
+the TEMPered USB device. It is used by the TEMPered project.
 
 Begin installation of the hidapi.  First you must install required applications and
 libraries with 'sudo apt-get install libudev-dev libusb-1.0-0-dev g++ autotools-dev
