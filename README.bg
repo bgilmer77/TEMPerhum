@@ -20,8 +20,18 @@ Download signal11/hidapi from www.git.com.  This is an hid api that provides acc
 the TEMPered USB device. It is used by the TEMPered project.
 
 Begin installation of the hidapi.  First you must install required applications and
-libraries with 'sudo apt-get install libudev-dev libusb-1.0-0-dev g++ autotools-dev
-autoconf automake libtool'.  Then in the top directory execute the following as root:
+libraries with 'sudo apt-get install
+
+Here are the applications you must install:
+libudev-dev
+libusb-1.0-0-dev
+g++
+autotools-dev
+autoconf 
+automake
+libtool
+
+In the hidapi top directory execute the following as root:
 
 ./bootstrap
 ./configure
@@ -33,6 +43,7 @@ apt-get install cmake
 mkdir ~/build
 cd ~/build
 cmake ..
+make
 
 Once the code is made, test it.  Insert the TEMPerHUM USB device and type 'lsusb'.
 You should see the device.  You should then be able to execute 'tempered'
